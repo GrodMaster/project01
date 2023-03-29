@@ -8,7 +8,7 @@
     <form action="{{route('post.destroy', $post->id)}}" method="post">
         @csrf
         @method('delete')
-    <input type="submit" class="btn btn-primary" value="Delete"/>
+    <input type="submit" class="btn btn-primary m-3" value="Delete"/>
     </form>
     <a href="{{route('post.index')}}" class="btn btn-primary m-3">Back</a>
 

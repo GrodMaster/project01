@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categori;
+use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -15,8 +17,12 @@ class PostController extends Controller
 //
 //        }
 
-        $posts = Post::all();
-        return view('post.index', compact('posts'));
+        $categoryes = Category::find(1);
+        $posts = Post::find(3);
+        dd($posts->tags);
+        dd($categoryes->posts);
+
+//        return view('post.index', compact('posts'));
     }
 
     public function create()
@@ -47,9 +53,9 @@ class PostController extends Controller
     public function update(Post $post)
     {
         $data = request()->validate([
-            'title' => 'string|null',
-            'content' => 'string|null',
-            'image' => 'string|null',
+            'title' => 'string',
+            'content' => 'string',
+            'image' => 'string',
         ]);
         $post->update($data);
         return redirect()->route('post.show', $post->id);
