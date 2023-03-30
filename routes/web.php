@@ -28,9 +28,9 @@ Route::delete('/post/{post}', [PostController::class, 'destroy'])->name('post.de
 Route::get('/update', [PostController::class, 'update']);
 Route::get('/delete', [PostController::class, 'delete']);
 Route::get('/restore', [PostController::class, 'restore']);
+Route::get('/allDelete', [PostController::class, 'allDelete']);
 Route::get('/firstOrCreate', [PostController::class, 'firstOrCreate']);
 Route::get('/updateOrCreate', [PostController::class, 'updateOrCreate']);
-
 
 Route::get('/main', [MainController::class, 'index'])->name('main.index');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');

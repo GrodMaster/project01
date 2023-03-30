@@ -11,18 +11,18 @@ class PostController extends Controller
 {
     public function index()
     {
-//        $posts = Post::where('is_published', '1')->get();
+        $posts = Post::all();
 //        foreach ($posts as $post) {
 //            dump($post->title);
 //
 //        }
 
-        $categoryes = Category::find(1);
-        $posts = Post::find(3);
-        dd($posts->tags);
-        dd($categoryes->posts);
+//        $categoryes = Category::find(1);
+//        $posts = Post::find(3);
+//        dd($posts->tags);
+//        dd($categoryes->posts);
 
-//        return view('post.index', compact('posts'));
+        return view('post.index', compact('posts'));
     }
 
     public function create()
@@ -45,6 +45,7 @@ class PostController extends Controller
     {
         return view('post.show', compact('post'));
     }
+
     protected function edit(Post $post)
     {
         return view('post.edit', compact('post'));
@@ -69,8 +70,11 @@ class PostController extends Controller
 
     public function restore()
     {
-        $post = Post::withTrashed()->find(6);
-        $post->restore();
+        $posts = Post::withTrashed()->get();
+//        dd($posts);
+        foreach ($posts as $post) {
+            $post->restore();
+        }
         dd('end');
     }
 
@@ -80,8 +84,6 @@ class PostController extends Controller
             'title' => 'some 2title',
             'content' => 'some 2content',
             'image' => 'someImg.jpg',
-            'likes' => '2000',
-            'is_published' => '1',
         ];
         Post::firstOrCreate(
             [
@@ -96,11 +98,14 @@ class PostController extends Controller
             'title' => '2title',
             'content' => '2content',
             'image' => 'Img.jpg',
-            'likes' => '200',
-            'is_published' => '1',
         ];
-        Post::
-        updateOrCreate(['title' => '2title',],
+        Post::updateOrCreate(['title' => '2title',],
             $anotherPost);
+    }
+
+    public function allDelete(Post $post)
+    {
+        $posts = Post::onlyTrashed()->get();
+        return view('post.allDelete', compact('posts'));
     }
 }
