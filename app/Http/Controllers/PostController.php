@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Categori;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -12,6 +12,9 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::all();
+//        $category= Category::find(1);
+//        $tag = Tag::find(1);
+//        dd($post->tags);
 //        foreach ($posts as $post) {
 //            dump($post->title);
 //
@@ -27,17 +30,33 @@ class PostController extends Controller
 
     public function create()
     {
-        return view('post.create');
+        $categories = Category::all();
+        $tags = Tag::all();
+
+        return view('post.create', compact('categories', 'tags'));
     }
 
     public function store()
     {
         $data = request()->validate([
-            'title' => 'string',
+            'title' => 'required|string',
             'content' => 'string',
             'image' => 'string',
+            'category_id' => '',
+            'tags'=> '',
+
         ]);
-        Post::create($data);
+        $tags = $data['tags'];
+        unset($data['tags']);
+        $post = Post::create($data);
+
+        $post->tags()->attach($tags);
+//        foreach ($tags as $tag){
+//        PostTag::firstOrCreate([
+//            'tag_id'=> $tag,
+//            'post_id'=> $post->id,
+//        ]);
+//        }
         return redirect()->route('post.index');
     }
 
@@ -48,7 +67,10 @@ class PostController extends Controller
 
     protected function edit(Post $post)
     {
-        return view('post.edit', compact('post'));
+        $tags = Tag::all();
+
+        $categories = Category::all();
+        return view('post.edit', compact('post', 'categories', 'tags'));
     }
 
     public function update(Post $post)
@@ -57,8 +79,16 @@ class PostController extends Controller
             'title' => 'string',
             'content' => 'string',
             'image' => 'string',
+            'category_id' => '',
+            'tags'=>'',
+
         ]);
+        $tags = $data['tags'];
+        unset($data['tags']);
+
         $post->update($data);
+//        $post = $post->fresh();
+        $post->tags()->sync($tags);
         return redirect()->route('post.show', $post->id);
     }
 
@@ -103,7 +133,7 @@ class PostController extends Controller
             $anotherPost);
     }
 
-    public function allDelete(Post $post)
+    public function allDelete()
     {
         $posts = Post::onlyTrashed()->get();
         return view('post.allDelete', compact('posts'));
