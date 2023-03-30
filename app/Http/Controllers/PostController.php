@@ -136,6 +136,7 @@ class PostController extends Controller
     public function allDelete()
     {
         $posts = Post::onlyTrashed()->get();
+
         return view('post.allDelete', compact('posts'));
     }
 }
