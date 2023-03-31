@@ -139,4 +139,6 @@ class PostController extends Controller
 
         return view('post.allDelete', compact('posts'));
     }
+
+
 }

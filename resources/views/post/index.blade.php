@@ -8,7 +8,7 @@
 {{--            <div class="m-3">{{$post->content}}</div>--}}
         @endforeach
         <div class="mt-5">
-            {{$posts->links()}}
+            {{$posts->withQueryString()->links()}}
         </div>
     </div>
 @endsection
