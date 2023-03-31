@@ -16,14 +16,19 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', [PostController::class, 'index'])->name('post.index');
-Route::get('/create', [PostController::class, 'create'])->name('post.create');
+Route::group(['namespace'=>'Post'], function (){
+    Route::get('/', '\App\Http\Controllers\post\indexController')->name('post.index');
+    Route::get('/create', '\App\Http\Controllers\post\CreateController')->name('post.create');
+    Route::post('/create', '\App\Http\Controllers\post\StoreController')->name('post.store');
+    Route::get('/post/{post}', '\App\Http\Controllers\post\ShowController')->name('post.show');
+    Route::get('/post/{post}/edit', '\App\Http\Controllers\post\EditController')->name('post.edit');
+    Route::patch('/post/{post}', '\App\Http\Controllers\post\UpdateController')->name('post.update');
+    Route::delete('/post/{post}', '\App\Http\Controllers\post\DestroyController')->name('post.destroy');
+});
 
-Route::post('/create', [PostController::class, 'store'])->name('post.store');
-Route::get('/post/{post}', [PostController::class, 'show'])->name('post.show');
-Route::get('/post/{post}/edit', [PostController::class, 'edit'])->name('post.edit');
-Route::patch('/post/{post}', [PostController::class, 'update'])->name('post.update');
-Route::delete('/post/{post}', [PostController::class, 'destroy'])->name('post.destroy');
+
+
+
 
 Route::get('/update', [PostController::class, 'update']);
 Route::get('/delete', [PostController::class, 'delete']);
